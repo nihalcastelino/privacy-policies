@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delete Account — Lock &amp; Slide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+  :root {
+    --parchment: #F5EBDD;
+    --walnut: #5E3A24;
+    --walnut-light: #8B5E3C;
+    --brass: #D4A94F;
+    --card: #FFFAF3;
+    --text: #3D2618;
+    --text-muted: #8B7355;
+    --border: rgba(94, 58, 36, 0.1);
+    --red: #C0392B;
+    --red-light: rgba(192, 57, 43, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #FAF3E8 0%, #F0E0CA 100%);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #6B4226, #3E2214);
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: var(--parchment);
+    border-radius: 18px;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--walnut);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    color: var(--parchment);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .header p {
+    color: rgba(245, 235, 221, 0.6);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(94, 58, 36, 0.06);
+    border: 1px solid var(--border);
+  }
+
+  .section-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(94, 58, 36, 0.07);
+    border-radius: 12px;
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .section h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--walnut);
+    margin-bottom: 12px;
+  }
+
+  .section p, .section li {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .section ul {
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  .section li { margin-bottom: 6px; }
+
+  .highlight-box {
+    background: rgba(212, 169, 79, 0.1);
+    border-left: 3px solid var(--brass);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13px;
+  }
+
+  .warning-box {
+    background: var(--red-light);
+    border-left: 3px solid var(--red);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13px;
+  }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--walnut);
+    color: var(--parchment);
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 800;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .step-content {
+    flex: 1;
+  }
+
+  .step-content strong {
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .step-content span {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .section a {
+    color: var(--walnut);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--brass);
+    text-underline-offset: 3px;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 32px 24px 48px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .footer-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--walnut);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--parchment);
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .header { padding: 36px 16px 32px; }
+    .header h1 { font-size: 24px; }
+    .container { padding: 16px 14px 48px; }
+    .section { padding: 22px 18px; border-radius: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">L&S</div>
+  <h1>Delete Account &amp; Data</h1>
+  <p>Lock &amp; Slide</p>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-icon">&#128196;</div>
+    <h2>Overview</h2>
+    <p>Lock &amp; Slide uses Google Play Games (Android) or Apple Game Center (iOS) for sign-in. We do not maintain separate user accounts — your identity is managed entirely by Google or Apple.</p>
+    <p>This page explains how to delete all data associated with your Lock &amp; Slide account and gameplay.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">&#128241;</div>
+    <h2>Step 1 — Delete Local Data</h2>
+    <p>All gameplay progress, settings, streaks, and preferences are stored locally on your device. To delete this data:</p>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <strong>Android</strong>
+        <span>Settings &rarr; Apps &rarr; Lock &amp; Slide &rarr; Storage &rarr; Clear Data</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <strong>iOS</strong>
+        <span>Delete (uninstall) the app. All local data is removed automatically.</span>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      This immediately removes all local progress, crown ratings, daily streak history, and settings.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">&#9729;&#65039;</div>
+    <h2>Step 2 — Delete Cloud Save Data</h2>
+    <p>If you used the Cloud Save feature (via Google Play Games), your progress was backed up to Google's servers. To delete it:</p>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <strong>Open Lock &amp; Slide</strong>
+        <span>Go to Settings &rarr; Account</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <strong>Delete Cloud Save</strong>
+        <span>Tap "Delete Cloud Data" to remove your saved game from Google Play Games</span>
+      </div>
+    </div>
+
+    <p>Alternatively, you can manage your Play Games data directly:</p>
+    <div class="step">
+      <div class="step-number">&bull;</div>
+      <div class="step-content">
+        <strong>Google Play Games</strong>
+        <span>Open the Play Games app &rarr; Profile &rarr; Settings &rarr; Delete Play Games account &amp; data</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">&bull;</div>
+      <div class="step-content">
+        <strong>Apple Game Center</strong>
+        <span>Game Center data can be managed in iOS Settings &rarr; Game Center</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">&#128202;</div>
+    <h2>Step 3 — Analytics &amp; Crash Data</h2>
+    <p>Lock &amp; Slide uses Firebase Analytics and Crashlytics, which collect anonymized usage and crash data. This data:</p>
+    <ul>
+      <li>Is not tied to a personal identity</li>
+      <li>Cannot be individually retrieved or deleted</li>
+      <li>Is automatically purged by Google Firebase according to their <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">retention policies</a> (typically 60 days for crash data, 14 months for analytics)</li>
+    </ul>
+    <p>To stop future collection, simply uninstall the app.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">&#128176;</div>
+    <h2>In-App Purchases</h2>
+    <p>Your "Remove Ads" purchase is managed by the Google Play Store or Apple App Store, not by us. Deleting your game data does not affect your purchase record.</p>
+    <div class="highlight-box">
+      If you reinstall the app, you can restore your purchase via Settings &rarr; Purchases &rarr; Restore.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">&#9888;&#65039;</div>
+    <h2>What Gets Deleted</h2>
+
+    <div class="warning-box">
+      <strong>This action is permanent and cannot be undone.</strong>
+    </div>
+
+    <p>When you complete all steps above, the following data is permanently removed:</p>
+    <ul>
+      <li>All puzzle completion records and crown ratings</li>
+      <li>Daily challenge streak history</li>
+      <li>Endless mode statistics</li>
+      <li>App settings and preferences</li>
+      <li>Cloud save backup (if applicable)</li>
+    </ul>
+
+    <p>The following is <strong>not</strong> deleted (managed by platform):</p>
+    <ul>
+      <li>Your Google or Apple account</li>
+      <li>In-app purchase records</li>
+      <li>Leaderboard scores (managed by Play Games / Game Center)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">&#128231;</div>
+    <h2>Need Help?</h2>
+    <p>If you need assistance deleting your data or have any questions, contact us:</p>
+    <div class="highlight-box">
+      <strong>FluffyLlama.Games</strong><br>
+      Email: <a href="mailto:privacy@fluffyllama.games">privacy@fluffyllama.games</a>
+    </div>
+    <p>We will process deletion requests within 30 days.</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-logo">L&S</div>
+  <p>&copy; 2026 FluffyLlama.Games. All rights reserved.</p>
+  <p style="margin-top: 4px;">Lock &amp; Slide &mdash; Slide. Lock. Solve.</p>
+</div>
+
+</body>
+</html>
