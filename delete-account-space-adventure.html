@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delete Account &amp; Data — Space Adventure</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+  :root {
+    --space-black: #0a0a0f;
+    --space-deep: #111827;
+    --space-card: #1f2937;
+    --space-border: #374151;
+    --gold: #fbbf24;
+    --gold-dim: #92702a;
+    --blue: #60a5fa;
+    --green: #34d399;
+    --red: #f87171;
+    --purple: #a78bfa;
+    --orange: #fb923c;
+    --text: #f3f4f6;
+    --text-muted: #9ca3af;
+    --text-dim: #6b7280;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #0a0a1a 0%, #0f172a 50%, #0a0a1a 100%);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 45%, rgba(251,191,36,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 65% 70%, rgba(96,165,250,0.3) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .header {
+    background: linear-gradient(135deg, rgba(17,24,39,0.95), rgba(127,29,29,0.3), rgba(17,24,39,0.95));
+    border-bottom: 1px solid rgba(248,113,113,0.25);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-icon {
+    font-size: 56px;
+    margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 0 12px rgba(248,113,113,0.4));
+  }
+
+  .header h1 {
+    color: var(--red);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    text-shadow: 0 0 20px rgba(248,113,113,0.3);
+  }
+
+  .header p {
+    color: var(--text-dim);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .effective-date {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+    padding: 12px 20px;
+    background: rgba(31,41,55,0.6);
+    border-radius: 12px;
+    border: 1px solid var(--space-border);
+    backdrop-filter: blur(8px);
+  }
+
+  .section {
+    background: rgba(31,41,55,0.7);
+    border: 1px solid var(--space-border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s;
+  }
+
+  .section:hover {
+    border-color: rgba(251,191,36,0.25);
+  }
+
+  .section-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    margin-right: 12px;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .icon-gold { background: rgba(251,191,36,0.15); }
+  .icon-blue { background: rgba(96,165,250,0.15); }
+  .icon-green { background: rgba(52,211,153,0.15); }
+  .icon-red { background: rgba(248,113,113,0.15); }
+  .icon-purple { background: rgba(167,139,250,0.15); }
+  .icon-orange { background: rgba(251,146,60,0.15); }
+
+  .section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+  }
+
+  .section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .section p {
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+  }
+
+  .section ul li {
+    position: relative;
+    padding-left: 20px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .section ul li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .section ul li strong {
+    color: var(--text);
+  }
+
+  .steps-list {
+    counter-reset: steps;
+    list-style: none;
+    padding: 0;
+  }
+
+  .steps-list li {
+    counter-increment: steps;
+    padding-left: 36px;
+    position: relative;
+    margin-bottom: 14px;
+    color: var(--text-muted);
+  }
+
+  .steps-list li::before {
+    content: counter(steps);
+    position: absolute;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    background: rgba(251,191,36,0.15);
+    color: var(--gold);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 1px;
+  }
+
+  .highlight-box {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .highlight-box p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .highlight-box strong {
+    color: var(--gold);
+  }
+
+  .warning-box {
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.25);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .warning-box p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .warning-box strong {
+    color: var(--red);
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 16px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--space-border);
+  }
+
+  .data-table thead th {
+    background: rgba(17,24,39,0.8);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--space-border);
+  }
+
+  .data-table tbody td {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(55,65,81,0.5);
+    background: rgba(17,24,39,0.4);
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .data-table tbody td strong {
+    color: var(--text);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-deleted {
+    background: rgba(248,113,113,0.15);
+    color: var(--red);
+  }
+
+  .badge-retained {
+    background: rgba(251,191,36,0.15);
+    color: var(--gold);
+  }
+
+  .badge-anonymized {
+    background: rgba(167,139,250,0.15);
+    color: var(--purple);
+  }
+
+  .contact-card {
+    background: rgba(17,24,39,0.6);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 12px;
+  }
+
+  .contact-card p {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .contact-card strong {
+    color: var(--text);
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--space-border), transparent);
+    margin: 32px 0;
+  }
+
+  .footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .header { padding: 36px 16px 32px; }
+    .header h1 { font-size: 22px; }
+    .container { padding: 16px 14px 40px; }
+    .section { padding: 20px 16px; }
+    .data-table { font-size: 13px; }
+    .data-table thead th,
+    .data-table tbody td { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <span class="header-icon">&#x1F5D1;</span>
+  <h1>Account &amp; Data Deletion</h1>
+  <p>Space Adventure</p>
+</div>
+
+<!-- Content -->
+<div class="container">
+
+  <div class="effective-date">
+    Effective Date: April 10, 2026 &nbsp;&bull;&nbsp; Last Updated: April 10, 2026
+  </div>
+
+  <!-- Overview -->
+  <div class="section">
+    <h2>
+      <span class="section-icon icon-gold">&#x1F6E1;</span>
+      Overview
+    </h2>
+    <p>
+      At Space Adventure, we respect your right to control your personal data. You may request the deletion
+      of your account and all associated data at any time. This page explains how to delete your account,
+      what data is affected, and the timeline for processing your request.
+    </p>
+    <div class="warning-box">
+      <p>
+        <strong>&#x26A0; Account deletion is permanent and irreversible.</strong> Once processed, your game progress,
+        coins, ships, achievements, and all personal data cannot be recovered.
+      </p>
+    </div>
+  </div>
+
+  <!-- How to Delete -->
+  <div class="section">
+    <h2>
+      <span class="section-icon icon-red">&#x1F4F1;</span>
+      How to Delete Your Account
+    </h2>
+
+    <h3>Option 1 — In-App Deletion</h3>
+    <ol class="steps-list">
+      <li>Open <strong>Space Adventure</strong> and sign in to your account</li>
+      <li>Tap your <strong>avatar</strong> or the <strong>profile icon</strong> to open your Profile</li>
+      <li>Scroll down to the bottom of your profile</li>
+      <li>Tap <strong>"Delete Account"</strong></li>
+      <li>Read the confirmation dialog and tap <strong>"Yes, Delete My Account"</strong></li>
+      <li>Your account is immediately deactivated and queued for permanent deletion</li>
+    </ol>
+
+    <h3>Option 2 — Email Request</h3>
+    <ol class="steps-list">
+      <li>Send an email to <strong>privacy@spacerace.games</strong></li>
+      <li>Use the subject line: <strong>"Account Deletion Request"</strong></li>
+      <li>Include the <strong>email address</strong> associated with your Space Adventure account</li>
+      <li>We will verify your identity and confirm receipt within <strong>7 days</strong></li>
+      <li>Deletion will be completed within <strong>30 days</strong> of verification</li>
+    </ol>
+  </div>
+
+  <!-- What Gets Deleted -->
+  <div class="section">
+    <h2>
+      <span class="section-icon icon-blue">&#x1F4BE;</span>
+      Data Affected by Deletion
+    </h2>
+    <p>The table below details what happens to each category of your data when you delete your account:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Data Category</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Account credentials</strong><br>Email, display name, password hash, auth tokens</td>
+          <td><span class="badge badge-deleted">Deleted</span></td>
+        </tr>
+        <tr>
+          <td><strong>Game progress</strong><br>Scores, level progress, campaign state</td>
+          <td><span class="badge badge-deleted">Deleted</span></td>
+        </tr>
+        <tr>
+          <td><strong>Achievements &amp; leaderboard</strong><br>All earned achievements, leaderboard entries</td>
+          <td><span class="badge badge-deleted">Deleted</span></td>
+        </tr>
+        <tr>
+          <td><strong>In-app currency &amp; inventory</strong><br>Coin balance, purchased ships, cosmetics</td>
+          <td><span class="badge badge-deleted">Deleted</span></td>
+        </tr>
+        <tr>
+          <td><strong>Profile &amp; preferences</strong><br>Avatar, settings, cookie consent choices</td>
+          <td><span class="badge badge-deleted">Deleted</span></td>
+        </tr>
+        <tr>
+          <td><strong>Multiplayer data</strong><br>Game room history, online match records</td>
+          <td><span class="badge badge-deleted">Deleted</span></td>
+        </tr>
+        <tr>
+          <td><strong>Analytics data</strong><br>Usage patterns, session logs</td>
+          <td><span class="badge badge-anonymized">Anonymized</span></td>
+        </tr>
+        <tr>
+          <td><strong>Payment records</strong><br>Stripe transaction history (no card details stored)</td>
+          <td><span class="badge badge-retained">Retained*</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fraud prevention logs</strong><br>Security and abuse prevention records</td>
+          <td><span class="badge badge-retained">Retained*</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: 13px; color: var(--text-dim);">
+      *Retained data is kept only as required by law (typically up to 7 years for financial records).
+      This data is not used for marketing or any purpose other than legal compliance.
+    </p>
+  </div>
+
+  <!-- Timeline -->
+  <div class="section">
+    <h2>
+      <span class="section-icon icon-orange">&#x23F1;</span>
+      Deletion Timeline
+    </h2>
+
+    <div class="highlight-box">
+      <p>
+        <strong>Immediate (in-app deletion):</strong> Your account is deactivated instantly. You are signed out
+        and can no longer access your account.
+      </p>
+    </div>
+
+    <div class="highlight-box">
+      <p>
+        <strong>Within 7 days (email requests):</strong> We acknowledge your request and verify your identity.
+      </p>
+    </div>
+
+    <div class="highlight-box">
+      <p>
+        <strong>Within 30 days:</strong> All personal data marked for deletion is permanently removed from
+        our systems, including backups.
+      </p>
+    </div>
+
+    <p>
+      If your request cannot be processed (e.g., we cannot verify your identity), we will notify you
+      and explain the reason.
+    </p>
+  </div>
+
+  <!-- Before You Delete -->
+  <div class="section">
+    <h2>
+      <span class="section-icon icon-purple">&#x2139;</span>
+      Before You Delete
+    </h2>
+    <p>Please review the following before proceeding with account deletion:</p>
+    <ul>
+      <li><strong>Cancel active subscriptions:</strong> If you have a premium subscription, cancel it first to avoid future charges. Deleting your account does not automatically cancel subscriptions managed by app stores.</li>
+      <li><strong>Spend remaining coins:</strong> Your coin balance and purchased ships will be permanently lost and cannot be refunded.</li>
+      <li><strong>No recovery:</strong> Once deletion is complete, there is no way to restore your account, progress, or purchases. You would need to create a new account to play again.</li>
+      <li><strong>Third-party sign-in:</strong> If you signed in with Google or Apple, deleting your Space Adventure account does not affect your Google or Apple account.</li>
+      <li><strong>Shared devices:</strong> If you play on multiple devices, you will be signed out on all devices.</li>
+    </ul>
+  </div>
+
+  <!-- Your Rights -->
+  <div class="section">
+    <h2>
+      <span class="section-icon icon-green">&#x2696;</span>
+      Your Rights
+    </h2>
+    <p>Under GDPR, CCPA, and other applicable privacy laws, you also have the right to:</p>
+    <ul>
+      <li><strong>Access</strong> a copy of your personal data before deletion</li>
+      <li><strong>Export</strong> your data in a portable format (data portability)</li>
+      <li><strong>Restrict</strong> processing instead of full deletion</li>
+      <li><strong>Object</strong> to specific types of data processing</li>
+    </ul>
+    <p>
+      To exercise any of these rights, contact us at the email below. We will respond within 30 days
+      as required by law.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Contact -->
+  <div class="section">
+    <h2>
+      <span class="section-icon icon-gold">&#x1F4E7;</span>
+      Contact Us
+    </h2>
+    <p>For account deletion requests, privacy questions, or to exercise your data rights:</p>
+    <div class="contact-card">
+      <p><strong>Email:</strong> privacy@spacerace.games</p>
+      <p><strong>Subject Line:</strong> "Account Deletion Request"</p>
+      <p style="margin-top:12px; font-size:13px; color:var(--text-dim);">
+        We will acknowledge your request within 7 days and complete processing within 30 days.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>&copy; 2026 Space Adventure. All rights reserved.</p>
+  <p style="margin-top: 8px;">
+    <a href="privacy-policy-space-adventure.html">Privacy Policy</a>
+  </p>
+</div>
+
+</body>
+</html>
