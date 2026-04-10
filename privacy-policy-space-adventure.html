@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy &amp; Account Deletion Policy — Space Adventure</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+  :root {
+    --space-black: #0a0a0f;
+    --space-deep: #111827;
+    --space-card: #1f2937;
+    --space-border: #374151;
+    --gold: #fbbf24;
+    --gold-dim: #92702a;
+    --blue: #60a5fa;
+    --blue-dim: #1e40af;
+    --green: #34d399;
+    --red: #f87171;
+    --purple: #a78bfa;
+    --orange: #fb923c;
+    --text: #f3f4f6;
+    --text-muted: #9ca3af;
+    --text-dim: #6b7280;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #0a0a1a 0%, #0f172a 50%, #0a0a1a 100%);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 45%, rgba(251,191,36,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 65% 70%, rgba(96,165,250,0.3) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .header {
+    background: linear-gradient(135deg, rgba(17,24,39,0.95), rgba(30,58,138,0.4), rgba(17,24,39,0.95));
+    border-bottom: 1px solid rgba(251,191,36,0.2);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-icon {
+    font-size: 56px;
+    margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 0 12px rgba(251,191,36,0.4));
+  }
+
+  .header h1 {
+    color: var(--gold);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    text-shadow: 0 0 20px rgba(251,191,36,0.3);
+  }
+
+  .header p {
+    color: var(--text-dim);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .effective-date {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+    padding: 12px 20px;
+    background: rgba(31,41,55,0.6);
+    border-radius: 12px;
+    border: 1px solid var(--space-border);
+    backdrop-filter: blur(8px);
+  }
+
+  .section {
+    background: rgba(31,41,55,0.7);
+    border: 1px solid var(--space-border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s;
+  }
+
+  .section:hover {
+    border-color: rgba(251,191,36,0.25);
+  }
+
+  .section-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    margin-right: 12px;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .icon-gold { background: rgba(251,191,36,0.15); }
+  .icon-blue { background: rgba(96,165,250,0.15); }
+  .icon-green { background: rgba(52,211,153,0.15); }
+  .icon-red { background: rgba(248,113,113,0.15); }
+  .icon-purple { background: rgba(167,139,250,0.15); }
+  .icon-orange { background: rgba(251,146,60,0.15); }
+
+  .section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+  }
+
+  .section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .section p {
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+  }
+
+  .section ul li {
+    position: relative;
+    padding-left: 20px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .section ul li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .section ul li strong {
+    color: var(--text);
+  }
+
+  .third-party-card {
+    background: rgba(17,24,39,0.6);
+    border: 1px solid var(--space-border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+
+  .third-party-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .third-party-card p {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .third-party-card a {
+    color: var(--blue);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .third-party-card a:hover {
+    color: #93c5fd;
+    text-decoration: underline;
+  }
+
+  /* Delete / Account Deletion section highlight */
+  .section.delete-section {
+    border-color: rgba(248,113,113,0.3);
+    background: rgba(31,41,55,0.8);
+  }
+
+  .section.delete-section:hover {
+    border-color: rgba(248,113,113,0.5);
+  }
+
+  .steps-list {
+    counter-reset: steps;
+    list-style: none;
+    padding: 0;
+  }
+
+  .steps-list li {
+    counter-increment: steps;
+    padding-left: 36px;
+    position: relative;
+    margin-bottom: 14px;
+    color: var(--text-muted);
+  }
+
+  .steps-list li::before {
+    content: counter(steps);
+    position: absolute;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    background: rgba(251,191,36,0.15);
+    color: var(--gold);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 1px;
+  }
+
+  .highlight-box {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 12px;
+  }
+
+  .highlight-box p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .highlight-box strong {
+    color: var(--gold);
+  }
+
+  .contact-card {
+    background: rgba(17,24,39,0.6);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 12px;
+  }
+
+  .contact-card p {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .contact-card strong {
+    color: var(--text);
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--space-border), transparent);
+    margin: 32px 0;
+  }
+
+  .footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .toc {
+    background: rgba(31,41,55,0.5);
+    border: 1px solid var(--space-border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(8px);
+  }
+
+  .toc h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    counter-reset: toc;
+    columns: 2;
+    column-gap: 24px;
+  }
+
+  .toc ol li {
+    counter-increment: toc;
+    margin-bottom: 6px;
+  }
+
+  .toc ol li a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .toc ol li a:hover {
+    color: var(--gold);
+  }
+
+  .toc ol li a::before {
+    content: counter(toc) '. ';
+    color: var(--gold-dim);
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .header { padding: 36px 16px 32px; }
+    .header h1 { font-size: 22px; }
+    .container { padding: 16px 14px 40px; }
+    .section { padding: 20px 16px; }
+    .toc ol { columns: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <span class="header-icon">&#x1F680;</span>
+  <h1>Space Adventure</h1>
+  <p>Privacy &amp; Account Deletion Policy</p>
+</div>
+
+<!-- Content -->
+<div class="container">
+
+  <div class="effective-date">
+    Effective Date: April 10, 2026 &nbsp;&bull;&nbsp; Last Updated: April 10, 2026
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#introduction">Introduction</a></li>
+      <li><a href="#info-collect">Information We Collect</a></li>
+      <li><a href="#how-use">How We Use Your Information</a></li>
+      <li><a href="#storage-security">Data Storage &amp; Security</a></li>
+      <li><a href="#third-party">Third-Party Services</a></li>
+      <li><a href="#cookies">Cookies &amp; Tracking</a></li>
+      <li><a href="#your-rights">Your Rights (GDPR &amp; CCPA)</a></li>
+      <li><a href="#children">Children's Privacy</a></li>
+      <li><a href="#data-retention">Data Retention</a></li>
+      <li><a href="#international">International Data Transfers</a></li>
+      <li><a href="#delete-account">Account &amp; Data Deletion</a></li>
+      <li><a href="#changes">Changes to This Policy</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. Introduction -->
+  <div class="section" id="introduction">
+    <h2>
+      <span class="section-icon icon-gold">&#x1F6E1;</span>
+      Introduction
+    </h2>
+    <p>
+      Welcome to Space Adventure ("we," "our," or "us"). We are committed to protecting your privacy and ensuring
+      you have a positive experience on our website and in using our services. This Privacy Policy explains how we
+      collect, use, disclose, and safeguard your information when you visit our website, use our mobile app,
+      and play our games.
+    </p>
+    <p>
+      By using Space Adventure, you agree to the collection and use of information in accordance with this policy.
+    </p>
+  </div>
+
+  <!-- 2. Information We Collect -->
+  <div class="section" id="info-collect">
+    <h2>
+      <span class="section-icon icon-blue">&#x1F4BE;</span>
+      Information We Collect
+    </h2>
+
+    <h3>Information You Provide</h3>
+    <ul>
+      <li><strong>Account Information:</strong> Email address, display name, and password when you create an account</li>
+      <li><strong>Game Data:</strong> Game progress, scores, achievements, ship inventory, and gameplay statistics</li>
+      <li><strong>Payment Information:</strong> Processed securely through Stripe (we never store credit card details)</li>
+      <li><strong>Profile Information:</strong> Avatar, preferences, and settings you choose to share</li>
+    </ul>
+
+    <h3>Automatically Collected Information</h3>
+    <ul>
+      <li><strong>Device Information:</strong> Device type, operating system, browser type, and screen resolution</li>
+      <li><strong>Usage Data:</strong> Pages visited, time spent, game sessions, and interactions</li>
+      <li><strong>Location Data:</strong> Country/region (for regional pricing and GDPR compliance)</li>
+      <li><strong>IP Address:</strong> Used for security, fraud prevention, and regional detection</li>
+    </ul>
+
+    <h3>Cookies &amp; Tracking Technologies</h3>
+    <ul>
+      <li><strong>Essential Cookies:</strong> Required for website functionality (session management, security)</li>
+      <li><strong>Advertising Cookies:</strong> Used by Google AdSense to show personalized ads (requires consent)</li>
+      <li><strong>Analytics Cookies:</strong> Help us understand how users interact with our website</li>
+      <li><strong>Personalization Cookies:</strong> Remember your preferences and settings</li>
+    </ul>
+  </div>
+
+  <!-- 3. How We Use Your Information -->
+  <div class="section" id="how-use">
+    <h2>
+      <span class="section-icon icon-green">&#x1F441;</span>
+      How We Use Your Information
+    </h2>
+    <ul>
+      <li>Provide, maintain, and improve our gaming services</li>
+      <li>Process payments and manage subscriptions</li>
+      <li>Personalize your gaming experience and show relevant content</li>
+      <li>Send you important updates, security alerts, and support messages</li>
+      <li>Analyze usage patterns to improve our games and services</li>
+      <li>Prevent fraud, abuse, and ensure platform security</li>
+      <li>Comply with legal obligations and enforce our terms</li>
+      <li>Show personalized advertisements (with your consent)</li>
+    </ul>
+  </div>
+
+  <!-- 4. Data Storage & Security -->
+  <div class="section" id="storage-security">
+    <h2>
+      <span class="section-icon icon-red">&#x1F512;</span>
+      Data Storage &amp; Security
+    </h2>
+    <p>We use industry-standard security measures to protect your data:</p>
+    <ul>
+      <li><strong>Supabase:</strong> User accounts, game data, and preferences are stored securely in Supabase (encrypted at rest and in transit)</li>
+      <li><strong>Stripe:</strong> Payment information is processed by Stripe (PCI-DSS compliant; we never store credit card details)</li>
+      <li><strong>Encryption:</strong> All data transmitted between your device and our servers uses HTTPS/TLS encryption</li>
+      <li><strong>Access Controls:</strong> Limited access to personal data on a need-to-know basis</li>
+      <li><strong>Regular Audits:</strong> Regular security assessments and updates</li>
+    </ul>
+  </div>
+
+  <!-- 5. Third-Party Services -->
+  <div class="section" id="third-party">
+    <h2>
+      <span class="section-icon icon-purple">&#x1F517;</span>
+      Third-Party Services
+    </h2>
+    <p>We use the following third-party services that may collect information:</p>
+
+    <div class="third-party-card">
+      <h4>Google AdSense</h4>
+      <p>We use Google AdSense to display advertisements. Google may use cookies and tracking technologies to show personalized ads based on your interests. You can manage your ad preferences through Google's Ad Settings.</p>
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy &rarr;</a>
+    </div>
+
+    <div class="third-party-card">
+      <h4>Stripe</h4>
+      <p>We use Stripe to process payments securely. Stripe handles all payment information and is PCI-DSS compliant. We only receive confirmation of successful payments.</p>
+      <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe Privacy Policy &rarr;</a>
+    </div>
+
+    <div class="third-party-card">
+      <h4>Supabase</h4>
+      <p>We use Supabase for user authentication and data storage. Supabase provides secure, encrypted database services.</p>
+      <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">Supabase Privacy Policy &rarr;</a>
+    </div>
+
+    <div class="third-party-card">
+      <h4>Firebase</h4>
+      <p>We use Firebase Realtime Database for real-time multiplayer game synchronization. Firebase may process connection metadata.</p>
+      <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">Firebase Privacy Policy &rarr;</a>
+    </div>
+  </div>
+
+  <!-- 6. Cookies -->
+  <div class="section" id="cookies">
+    <h2>
+      <span class="section-icon icon-orange">&#x1F36A;</span>
+      Cookies &amp; Tracking
+    </h2>
+    <p>You can manage your cookie preferences at any time:</p>
+    <ul>
+      <li>Use the "Manage Options" button in our in-app consent banner</li>
+      <li>Use your browser settings to block or delete cookies</li>
+      <li>Clear your browser's cookie cache</li>
+    </ul>
+    <p><strong>Note:</strong> Disabling certain cookies may affect website functionality.</p>
+  </div>
+
+  <!-- 7. Your Rights -->
+  <div class="section" id="your-rights">
+    <h2>
+      <span class="section-icon icon-gold">&#x1F464;</span>
+      Your Rights (GDPR &amp; CCPA)
+    </h2>
+    <p>If you are located in the European Economic Area (EEA), UK, Switzerland, or California, you have the following rights:</p>
+    <ul>
+      <li><strong>Right to Access:</strong> Request a copy of your personal data</li>
+      <li><strong>Right to Rectification:</strong> Correct inaccurate or incomplete data</li>
+      <li><strong>Right to Erasure:</strong> Request deletion of your personal data ("right to be forgotten")</li>
+      <li><strong>Right to Restrict Processing:</strong> Limit how we use your data</li>
+      <li><strong>Right to Data Portability:</strong> Receive your data in a portable format</li>
+      <li><strong>Right to Object:</strong> Object to processing of your data for certain purposes</li>
+      <li><strong>Right to Withdraw Consent:</strong> Withdraw consent for cookie usage at any time</li>
+      <li><strong>Right to Opt-Out:</strong> Opt-out of sale of personal information (California residents)</li>
+    </ul>
+    <p>To exercise these rights, please contact us at the email address below.</p>
+  </div>
+
+  <!-- 8. Children's Privacy -->
+  <div class="section" id="children">
+    <h2>
+      <span class="section-icon icon-blue">&#x1F6B8;</span>
+      Children's Privacy
+    </h2>
+    <p>
+      Our services are not directed to children under 13 (or 16 in the EEA). We do not knowingly collect
+      personal information from children. If you believe we have collected information from a child, please
+      contact us immediately and we will delete it.
+    </p>
+  </div>
+
+  <!-- 9. Data Retention -->
+  <div class="section" id="data-retention">
+    <h2>
+      <span class="section-icon icon-purple">&#x231B;</span>
+      Data Retention
+    </h2>
+    <p>We retain your personal data for as long as necessary to:</p>
+    <ul>
+      <li>Provide our services to you</li>
+      <li>Comply with legal obligations</li>
+      <li>Resolve disputes and enforce agreements</li>
+    </ul>
+    <p>
+      When you delete your account, we will delete or anonymize your personal data within 30 days,
+      except where we are required to retain it for legal purposes.
+    </p>
+  </div>
+
+  <!-- 10. International Transfers -->
+  <div class="section" id="international">
+    <h2>
+      <span class="section-icon icon-green">&#x1F30D;</span>
+      International Data Transfers
+    </h2>
+    <p>
+      Your data may be transferred to and processed in countries outside your country of residence.
+      We ensure appropriate safeguards are in place, including:
+    </p>
+    <ul>
+      <li>Standard Contractual Clauses (SCCs) for EEA data transfers</li>
+      <li>Compliance with GDPR and other applicable privacy laws</li>
+      <li>Encryption and security measures during transfer</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 11. Account & Data Deletion -->
+  <div class="section delete-section" id="delete-account">
+    <h2>
+      <span class="section-icon icon-red">&#x1F5D1;</span>
+      Account &amp; Data Deletion Policy
+    </h2>
+    <p>
+      You have the right to delete your account and all associated personal data at any time.
+      We provide multiple ways to request account deletion:
+    </p>
+
+    <h3>Option 1 — In-App Deletion</h3>
+    <ol class="steps-list">
+      <li>Open Space Adventure and sign in to your account</li>
+      <li>Navigate to your <strong>Profile</strong> (tap your avatar or the profile icon)</li>
+      <li>Scroll down and tap <strong>"Delete Account"</strong></li>
+      <li>Confirm the deletion when prompted</li>
+      <li>Your account and all associated data will be queued for permanent deletion</li>
+    </ol>
+
+    <h3>Option 2 — Email Request</h3>
+    <p>
+      Send an email to <strong>privacy@spacerace.games</strong> with the subject line
+      <strong>"Account Deletion Request"</strong>. Include the email address associated with your account.
+      We will process your request within 30 days.
+    </p>
+
+    <h3>What Gets Deleted</h3>
+    <p>When you delete your account, the following data is permanently removed:</p>
+    <ul>
+      <li><strong>Account credentials</strong> — email, display name, authentication tokens</li>
+      <li><strong>Game data</strong> — progress, scores, achievements, leaderboard entries</li>
+      <li><strong>Purchase history</strong> — in-app coin balances and ship inventory</li>
+      <li><strong>Profile information</strong> — avatar, preferences, settings</li>
+      <li><strong>Multiplayer data</strong> — game room history, online match records</li>
+      <li><strong>Cookie preferences</strong> — consent settings and personalization data</li>
+    </ul>
+
+    <h3>What May Be Retained</h3>
+    <ul>
+      <li><strong>Transaction records</strong> — Stripe payment records may be retained for legal/financial compliance (typically 7 years)</li>
+      <li><strong>Anonymized analytics</strong> — Aggregated, non-identifiable usage data may be retained for service improvement</li>
+      <li><strong>Legal obligations</strong> — Data required by law to be retained (e.g., fraud prevention records)</li>
+    </ul>
+
+    <h3>Deletion Timeline</h3>
+    <div class="highlight-box">
+      <p>
+        <strong>In-app deletion:</strong> Account is deactivated immediately. All personal data is permanently deleted within <strong>30 days</strong>.<br><br>
+        <strong>Email requests:</strong> We will acknowledge your request within <strong>7 days</strong> and complete deletion within <strong>30 days</strong> of verification.
+      </p>
+    </div>
+
+    <h3>Important Notes</h3>
+    <ul>
+      <li>Account deletion is <strong>permanent and irreversible</strong> — your game progress, coins, ships, and achievements cannot be recovered</li>
+      <li>Active premium subscriptions should be cancelled before deletion to avoid future charges</li>
+      <li>If you used Google or Apple sign-in, deleting your Space Adventure account does not affect your Google/Apple account</li>
+    </ul>
+  </div>
+
+  <!-- 12. Changes -->
+  <div class="section" id="changes">
+    <h2>
+      <span class="section-icon icon-orange">&#x1F4DD;</span>
+      Changes to This Policy
+    </h2>
+    <p>
+      We may update this Privacy Policy from time to time. We will notify you of any material changes
+      by posting the new policy on this page and updating the "Last Updated" date. We encourage you to
+      review this policy periodically.
+    </p>
+  </div>
+
+  <!-- 13. Contact -->
+  <div class="section" id="contact">
+    <h2>
+      <span class="section-icon icon-gold">&#x1F6E1;</span>
+      Contact Us
+    </h2>
+    <p>If you have questions about this Privacy Policy, wish to exercise your rights, or want to request account deletion:</p>
+    <div class="contact-card">
+      <p><strong>Email:</strong> privacy@spacerace.games</p>
+      <p><strong>Subject Line:</strong> "Privacy Policy Inquiry" or "Account Deletion Request"</p>
+      <p style="margin-top:12px; font-size:13px; color:var(--text-dim);">We will respond to your inquiry within 30 days as required by GDPR.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>&copy; 2026 Space Adventure. All rights reserved.</p>
+</div>
+
+</body>
+</html>
