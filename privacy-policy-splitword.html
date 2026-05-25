@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy - Splitword</title>
+<style>
+  :root { --bg: #142127; --accent: #EB6B38; --accent2: #D7E8A7; --panel: rgba(255,255,255,0.075); --panel2: rgba(255,255,255,0.12); --text: #F7F3EC; --muted: rgba(247,243,236,0.72); --line: rgba(255,255,255,0.14); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 32%), linear-gradient(145deg, var(--bg), #090D10); color: var(--text); line-height: 1.65; min-height: 100vh; }
+  header { padding: 46px 22px 34px; text-align: center; border-bottom: 1px solid var(--line); }
+  .mark { width: 76px; height: 76px; margin: 0 auto 18px; border-radius: 18px; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: var(--bg); font-weight: 900; font-size: 28px; box-shadow: 0 18px 45px rgba(0,0,0,0.32); }
+  h1 { font-size: clamp(28px, 7vw, 46px); line-height: 1.05; margin-bottom: 8px; }
+  .tag { color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; font-weight: 750; }
+  main { width: min(760px, calc(100% - 32px)); margin: 0 auto; padding: 26px 0 58px; }
+  .date { color: var(--muted); text-align: center; margin-bottom: 22px; font-size: 13px; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin: 14px 0; box-shadow: 0 8px 28px rgba(0,0,0,0.16); }
+  h2 { font-size: 19px; margin-bottom: 10px; color: var(--accent); }
+  p, li { font-size: 14px; color: var(--text); margin-bottom: 9px; }
+  ul { padding-left: 22px; }
+  .note { background: var(--panel2); border-left: 4px solid var(--accent2); border-radius: 10px; padding: 14px 16px; margin-top: 12px; color: var(--text); }
+  a { color: var(--accent); font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+  footer { text-align: center; color: var(--muted); padding: 0 20px 42px; font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="mark">S</div>
+  <h1>Privacy Policy</h1>
+  <div class="tag">Splitword - Word chunks with one-way choices</div>
+</header>
+<main>
+  <div class="date">Effective Date: April 20, 2026 &nbsp;|&nbsp; Last Updated: April 20, 2026</div>
+  <section><h2>Current Build Scope</h2><p>Splitword is currently a local Flutter mobile puzzle app. The live implementation in this repository does not require sign-in, does not send gameplay data to FluffyLlama servers, and stores only local progress on your device.</p></section>
+  <section><h2>What Data The Current App Stores</h2><ul><li>Unlocked level progress stored locally on your device.</li><li>The current in-progress board state so the app can resume after a relaunch on the same device.</li><li>No cloud account, payment, or ad profile data in the current build.</li></ul></section>
+  <section><h2>What The Current App Does Not Do</h2><ul><li>It does not create a Firebase account.</li><li>It does not upload puzzle progress to Firestore or any FluffyLlama backend.</li><li>It does not currently use RevenueCat, AdMob, analytics SDKs, or platform game services in this repository build.</li></ul><div class="note">If Splitword later ships with cloud save, analytics, ads, purchases, or platform leaderboards, this policy must be updated before release to reflect the real implementation.</div></section>
+  <section><h2>Your Controls</h2><p>You can clear the current app data by removing app storage on your device. Because the current build does not store account-linked data on FluffyLlama servers, there is no server-side account to delete at this stage.</p></section>
+  <section><h2>Children and General Audience</h2><p>Splitword is designed as a general-audience word puzzle. The current build is intended to avoid unnecessary personal data collection by default.</p></section>
+  <section><h2>Contact and Future Updates</h2><p>If the release scope changes, this page will be updated to match the real shipped stack and services. Read the matching delete-account page here: <a href="delete-account-splitword.html">delete-account-splitword.html</a>.</p></section>
+</main>
+<footer>FluffyLlama.Games - Splitword</footer>
+</body>
+</html>
+
