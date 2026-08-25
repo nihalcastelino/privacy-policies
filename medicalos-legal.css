@@ -1,0 +1,296 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   MedicalOS legal pages.
+
+   Palette and type are lifted from THEMES.signal in the product's own design
+   system (packages/shared/src/theme.ts) so the hosted policy pages and the app
+   are recognisably the same thing. Values are copied, not approximated.
+
+   These pages are read by store reviewers and data-protection regulators, so
+   legibility wins every argument with flourish: dark ground, one column, a
+   68ch measure, real heading hierarchy, and a print stylesheet that inverts to
+   black on white for anyone who files a paper copy.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* THEMES.signal.palette */
+  --ground: #14110C;
+  --ground-soft: #1B1712;
+  --surface: #1B1712;
+  --surface-2: #221D15;
+  --text: #F2EDE4;
+  --text-2: #BDB7AB;
+  --text-3: #9C968A;
+  --faint: #6E6759;
+  --accent: #D4A96A;
+  --accent-hover: #E2BC80;
+  --on-accent: #14110C;
+  --plate: #F5EFE2;
+  --danger: #C4616C;
+  --success: #6AC48B;
+  --line: rgba(242, 237, 228, 0.16);
+  --line-soft: rgba(242, 237, 228, 0.09);
+  --line-strong: rgba(242, 237, 228, 0.28);
+
+  /* THEMES.signal.type — FONT_SETS.signal */
+  --serif: "EB Garamond", Georgia, serif;
+  --sans: "Space Grotesk", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Signal is square. radius: { sm: 0, md: 0 } */
+  --radius: 0;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--accent-hover); }
+a:focus-visible,
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* ── Shared measure ──────────────────────────────────────────────────────── */
+.masthead-inner,
+.page,
+.footer-inner { width: min(720px, calc(100% - 32px)); margin: 0 auto; }
+
+/* ── Masthead ────────────────────────────────────────────────────────────── */
+.masthead {
+  background: var(--ground-soft);
+  border-bottom: 3px solid var(--accent);
+}
+.masthead-inner { padding: 32px 0 36px; }
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.mark {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: var(--radius);
+  font: 700 16px/1 var(--sans);
+  letter-spacing: 0;
+}
+.effective {
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+h1, h2, h3 { margin-top: 0; font-family: var(--sans); letter-spacing: -0.01em; }
+h1 {
+  max-width: 16ch;
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 7vw, 3rem);
+  line-height: 1.06;
+  font-weight: 700;
+  color: var(--text);
+}
+.deck {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--text-2);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* ── Page body ───────────────────────────────────────────────────────────── */
+.page { padding: 30px 0 56px; }
+
+.legal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 0 0 24px;
+  border-bottom: 1px solid var(--line);
+}
+.legal-nav a {
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.legal-nav a:hover { color: var(--text); }
+.legal-nav a[aria-current="page"] { color: var(--accent); }
+
+.notice {
+  margin: 26px 0;
+  padding: 16px 18px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  color: var(--text-2);
+}
+.notice strong { color: var(--text); }
+.notice p { margin: 8px 0 0; }
+.notice p:first-child { margin-top: 0; }
+
+.contents {
+  margin: 26px 0 34px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.contents p {
+  margin: 0 0 10px;
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.contents ol { columns: 2; margin: 0; padding-left: 22px; color: var(--text-2); }
+.contents li { margin: 0 0 4px; break-inside: avoid; }
+
+section { padding: 28px 0; border-bottom: 1px solid var(--line-soft); }
+section:last-of-type { border-bottom: 0; }
+
+h2 {
+  margin-bottom: 14px;
+  font-size: 1.5rem;
+  line-height: 1.22;
+  font-weight: 600;
+  color: var(--text);
+}
+h3 {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+p, ul, ol { color: var(--text-2); }
+p { max-width: 68ch; }
+ul, ol { max-width: 66ch; padding-left: 22px; }
+li + li { margin-top: 8px; }
+strong { color: var(--text); font-weight: 600; }
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; margin: 20px 0; }
+.data-table {
+  width: 100%;
+  min-width: 460px;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.data-table th,
+.data-table td {
+  padding: 12px 13px;
+  border: 1px solid var(--line-strong);
+  text-align: left;
+  vertical-align: top;
+  color: var(--text-2);
+}
+.data-table th {
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.data-table td strong { color: var(--text); }
+
+/* Status chips. The word carries the meaning; colour only reinforces it. */
+.label {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.label.danger { color: var(--danger); }
+.label.ok { color: var(--success); }
+
+/* ── Contact block ───────────────────────────────────────────────────────── */
+.contact {
+  padding: 18px 20px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+}
+.contact strong {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--sans);
+  color: var(--text);
+}
+.contact p { margin: 0; color: var(--text-2); }
+.contact p + p { margin-top: 10px; }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.footer { background: var(--ground-soft); border-top: 1px solid var(--line); }
+.footer-inner {
+  padding: 24px 0;
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+.footer a { color: var(--text-2); }
+.footer a:hover { color: var(--accent); }
+
+/* ── Narrow ──────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .masthead-inner { padding: 24px 0 28px; }
+  .brand-row { align-items: flex-start; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  h1 { max-width: none; }
+  .page { padding: 24px 0 44px; }
+  .contents ol { columns: 1; }
+  section { padding: 24px 0; }
+  h2 { font-size: 1.3rem; }
+}
+
+/* ── Print: regulators file paper ────────────────────────────────────────── */
+@media print {
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .masthead, .footer { background: #fff; border-color: #000; }
+  h1, h2, h3, .brand, .notice strong, strong { color: #000; }
+  .deck, .effective, p, ul, ol, .footer-inner { color: #222; }
+  a { color: #000; }
+  .notice, .contents, .contact { background: #fff; border-color: #666; }
+  .data-table th { background: #eee; color: #000; }
+  .data-table th, .data-table td { border-color: #666; color: #222; }
+  .legal-nav { display: none; }
+  section { break-inside: auto; border-color: #ccc; }
+  h2 { break-after: avoid; }
+}
