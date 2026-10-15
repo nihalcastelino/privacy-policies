@@ -189,7 +189,7 @@ API code that calls its functions is deployed. Do not publish the page before th
 | # | Page sentence | What 094 (or the PR) must do | Source |
 |---|---|---|---|
 | 1 | Class invitations: "An invitation that expires or is withdrawn is deleted 7 days later. One that is accepted is deleted 7 days after you accept it, once the app has told you that you have joined, and in any case within 30 days" | `privacy_purge_class_invitations` (grace 7 days; accepted: 7 days and `announced_at`, or 30 days), nightly 21:30 UTC via pg_cron | 094 section 1, 6 |
-| 2 | Push tokens: "Deleted when you sign out or switch notifications off. Any other switched-off token is deleted a week later" | API deletes the row at unregister/revoke (stated in the 094 header, **not yet in code**); `privacy_purge_push_devices` deletes inactive rows older than 7 days | 094 header, section 2 |
+| 2 | Push tokens: "Deleted when you sign out. A token Apple or Google report as no longer valid is deleted about a week later" (corrected, see 4.5) | API deletes the row at unregister/revoke (stated in the 094 header, **not yet in code**); `privacy_purge_push_devices` deletes inactive rows older than 7 days | 094 header, section 2 |
 | 3 | Audit log: "keeps its entries but loses your account identifier" (policy section 11, delete page section 4) | `privacy_forget_account_references` -> `scrub_access_audit(user)`: nulls `actor`, replaces the id inside `details` with the nil uuid; nightly sweep for earlier deletions. API call in `DELETE /account` **not yet in code** | 094 section 3 |
 | 4 | Sign-in event log: "entries that name your account identifier or email address are deleted when you delete your account" (policy section 9, delete page section 4) | `privacy_forget_auth_audit(user, emails)` called after the auth user is deleted. 094 itself says: **NOT VERIFIED on hosted Supabase** that the role can delete from `auth.audit_log_entries`. Test it on the first real deletion | 094 section 4 |
 | 5 | `topic_placements.placed_by` / `account_devices.removed_by` | Not on the page (staff-only); 094 adds `ON DELETE SET NULL` foreign keys | 094 section 5 |
@@ -211,6 +211,24 @@ the account is deleted.
 6. **Confirm in consoles:** Upstash primary region/replicas; Anthropic Console workspace is not opted into data sharing.
 7. **Counsel review recommended** of: the UK GDPR section and lawful-basis table, the transfers table, the "no restricted country" sentence, the DPDPA consent wording, the Grievance Officer arrangement, and whether lecturers/institutions are independent controllers of the class rosters and attendance they download (the page treats CLOUDZZY LTD as the controller of everything).
 8. Merge/apply the deletion-fix PR (4.3) before publishing, and delete the local production dump (4.2 item 2).
+
+### 4.5 Aligned with 094 (deletion-fix engineer's report, branch `claude/deletion-gaps`, commit 2726629c; read 2026-10-15)
+
+Edits made to the draft after that report:
+
+| # | Change on the pages | Why |
+|---|---|---|
+| 1 | Push tokens (policy section 9): "Deleted when you sign out; one that Apple or Google report as no longer valid is deleted about a week later". Added: `push_outbox` records of queued notifications stay until account deletion; `push_deliveries` go with the device row. Removed "or switch notifications off" | Only sign-out deletes a token at once. Switching off lecturer messages only changes a preference. The nightly job deletes inactive tokens a week old |
+| 2 | Class invitations: added "the clean-up runs nightly, so each deletion happens within about a day of these dates" | The job runs once a day (21:30 UTC) |
+| 3 | Sign-in provider event log (policy section 9, delete page section 4): deletion is "as far as we can", of entries containing the account id or email, when the account is deleted with the app's Delete account option; "if that fails, they are removed as part of the provider's normal log retention"; an account removed by an administrator directly in the provider's dashboard is not covered | `DELETE /account` calls `privacy_forget_auth_audit` fail-soft (warning, no address in the log). **I could not confirm the second clause:** Supabase's docs list no expiry for the `auth.audit_log_entries` table (only for its platform logs, by plan), and 094 does not claim one. The wording is the coordinator's; check it, or change it to "they stay until removed by hand" |
+| 4 | Rate-limit counters sentence kept ("expire by themselves, the longest within 40 days") | Becomes true only after the owner runs `node scripts/purge-ratelimit-analytics.mjs` (dry run first, then `--apply`) and the deployed code has `analytics: false`. The per-user AI-budget key has a 40-day TTL and is not deleted at account deletion; the figure covers it |
+| 5 | Delete page "what is kept, and why": new bullet on staff reviewer identifiers in content-rights records (`rights_ledger.former_owner`, `review_decisions.reviewer`, `object_withdrawal_manifests.reconciled_by`, `shared_asset_rights_reviews.reviewed_by` and `.revoked_by`). Staff only. Access-audit wording unchanged | Those columns keep a staff id by design (094 header: "four reviewer columns in privacy_private that keep a staff id by design") |
+| 6 | Inactivity: unchanged ("no inactivity deletion now") | The engineer's options are recorded for the owner |
+
+**PRE-PUBLISH owner actions (the page is untrue until done):**
+1. Owner applies migration 094 (migrations are applied by the owner, never a session), then the 094 code is merged and deployed.
+2. Owner runs `node scripts/purge-ratelimit-analytics.mjs` (dry run), then with `--apply`, to remove the existing Upstash analytics keys. Check it by running the dry run again: zero keys.
+3. After the first real account deletion, confirm in the API log that `privacy_forget_auth_audit` did not warn (094 itself says deleting from `auth.audit_log_entries` is NOT VERIFIED on hosted Supabase).
 
 ## 5. What I did not verify
 
