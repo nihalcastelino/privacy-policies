@@ -1,7 +1,7 @@
 # MedicalOS privacy update: draft changes (branch `privacy-update-2026-10`)
 
-DRAFT for the owner's review. Not pushed, not published. The policy is the owner's legal document: every
-`[OWNER: ...]` marker below is a fact the code cannot settle. Delete this file before merging to `main`
+DRAFT for the owner's review. Not pushed, not published. Second pass: all `[OWNER: ...]` markers that evidence could settle are
+settled (section 4); nine markers remain in the HTML, of two kinds: the publication date (8) and the sign-in email provider (1); see section 4.4. Delete this file before merging to `main`
 (GitHub Pages would publish it).
 
 Code references are paths in `MedicalOS` at master `8985a61` (clean checkout `MedicalOS-store-release-8985a61`).
@@ -33,8 +33,11 @@ no new classes; owner markers use `<mark>` so they show highlighted.
 | 17 | Terms: nothing on shared logins | Account is personal; device limit; watermark; no bypassing protections; downloaded lessons removed on sign-out | `docs/DEVICE-LIMIT.md` |
 | 18 | Support | Device-limit Q&A; "remove everything from my Windows PC" Q&A | |
 
-Kept as is: contact `nihal@cloudzzy.co.uk`, controller name "MedicalOS", DPDPA framing, 30-day response,
-18+ / not directed at children, Apple Hide My Email paragraph, backups paragraph (with a rotation placeholder).
+Kept as is: contact `nihal@cloudzzy.co.uk`, DPDPA framing (now alongside UK GDPR), 30-day response,
+18+ / not directed at children, Apple Hide My Email paragraph, backups paragraph (now with a period).
+
+Second pass (2026-10-15): the controller is CLOUDZZY LTD, a UK company (details from the owner), so the policy was
+rewritten for UK GDPR + DPDPA; see section 4.
 
 Age: Play checklist (`apps/mobile/store/play/en-GB/submission-checklist.md` section 4) says target audience 18+,
 no children's audience; the App Store note (`app-store/en-GB/metadata.md`) expects a 12+ rating, which is a
@@ -82,17 +85,16 @@ Google Fonts request).
 1. **Supabase Auth's own event log keeps the email address after deletion.** On the local stack
    (`medicalos-contracts`), `auth.audit_log_entries` held `user_deleted` and `login` rows with the user's email
    in the payload and no link to the deleted user (36 such rows). `DELETE /account` does not touch it. Hosted
-   Supabase behaviour and retention are NOT VERIFIED; check the dashboard. The policy has a placeholder.
+   Supabase behaviour and retention are NOT VERIFIED. Migration 094 (branch `claude/deletion-gaps`, not merged)
+   adds a function that removes the deleted user's entries; section 4.3.
 2. **`privacy_private.access_audit` keeps a deleted student's account id.** `actor` has no foreign key, and
    `class_join`, `class_request`, `default_institution_joined`, `class_invitation_admission` (088, 089, 091, 092)
    write the student's id; `class_approve`/`class_revoke` (043) put the student id in `details`. Nothing deletes
    these (the 062 clean-up only touches rows tied to a rights ledger). It is a random id with the account gone,
-   but it is a retained identifier. The delete page discloses it with a placeholder; a clean-up would be a
-   migration (not made).
+   but it is a retained identifier. Migration 094 (not merged) scrubs it; the pages are worded for that (section 4.3).
 3. **No time-based deletion of student data anywhere.** `learner_events`, devices, installs, screenshot reports,
    attendance, answers are kept until the user deletes the account. `docs/DEVICE-LIMIT.md`'s 30/14-day figures
-   only free a device slot; the row stays. Nothing deletes an inactive account (DPDPA expects erasure when the
-   purpose is served). Placeholder in section 9.
+   only free a device slot; the row stays. Nothing deletes an inactive account. Recommendation in section 4.1.
 4. **Switched-off push tokens are kept.** Unregister/sign-out only sets `active=false` (`routes/push.ts`).
    Tokens and the device name (often "Nihal's Pixel") stay until the account is deleted. `push_deliveries` copies
    the token as text.
@@ -121,32 +123,95 @@ Google Fonts request).
 12. **Credential Manager entries survive uninstall** (device key, installation id, data key) for both builds, and
     the NSIS uninstaller does not remove them either (`T6-CONTRACT.md` row 10). Disclosed with removal steps.
 13. **Device limit state.** `docs/DEVICE-LIMIT.md`: mode is `observe` (records, refuses nothing) by default. The
-    policy and terms say "currently two"; the terms carry an owner marker so you can hold that until enforcing.
+    policy and terms now say a student account "may be limited" to two devices, true in observe mode and when enforced (section 4.1).
 
-## 4. Owner markers (all `[OWNER: ...]`)
+## 4. Every `[OWNER: ...]` marker, settled (second pass, 2026-10-15)
 
-Privacy policy:
-1. Effective date (header) and last updated (footer): `date of publication`.
-2. Legal name and registered address of the data fiduciary (section 1).
-3. Name/postal address of the Grievance Officer, if published (section 1).
-4. What the NSIS uninstaller removes (section 2.9).
-5. Lawful-basis wording (counsel), and whether EEA/UK distribution adds GDPR wording (section 4).
-6. Whether lecturers can see answers to built-in (non-faculty) questions (section 5).
-7. Regions: Railway, Netlify, Upstash, Anthropic (plus its retention and no-training terms), OpenAI, Expo
-   (section 7); email-delivery provider and region (section 7).
-8. Counsel check on cross-border transfers and restricted countries (section 8).
-9. Inactivity retention period, if any (section 9).
-10. Railway log retention (section 9).
-11. Supabase Auth event-log retention, and whether deleted users' entries are removed (section 9).
-12. Backup rotation period (section 9).
+Sources are cited as "per X's published terms as of 2026-10-15" where they are public documents. Infrastructure
+facts were read-only: `railway status --json` (plan, region), `railway variables --json` (variable NAMES, and the
+host part of three URLs, never a value), `supabase projects list` (project region), DNS lookups of public hostnames.
 
-Delete page: date x2; accept or fix the `access_audit` identifier retention; periods for backups/logs/auth log.
-Terms: date x2; confirm the shared-login / device-limit paragraph and the number "two".
-Support: date x2.
+### 4.1 Resolved with evidence (the placeholder is gone from the HTML)
 
-The Supabase region "Ireland (EU West)" is NOT a marker: it comes from the brief (pooler host `aws-1-eu-west-1`),
-not from code. Please confirm it in the Supabase dashboard; Edge Functions and Storage are assumed to be in the
-same project region.
+| Marker | Decision written into the page | Evidence |
+|---|---|---|
+| Railway region | Netherlands (EU West, Amsterdam) | `railway status --json`: service `@medicalos/api`, `multiRegionConfig` = `europe-west4-drams3a`, 1 replica. Railway's regions page (docs.railway.com/deployments/regions) maps that id to "EU West Metal, Amsterdam, Netherlands" |
+| Netlify region | Global CDN | `netlify.toml`: static build (`apps/web/dist`) with one SPA redirect; no Netlify Functions or Edge Functions in the repo. Site host `medicalos.netlify.app` is `FRONTEND_URL` on Railway |
+| Upstash region | Europe (London) | Host from `UPSTASH_REDIS_REST_URL` (host only: `allowing-primate-20037.upstash.io`) is a CNAME to `p2-global.upstash.io` -> `global-latency.upstash.io` -> `global-euw2.upstash.io`; its IPs reverse to `ec2-*.eu-west-2.compute.amazonaws.com` (London). Same answer from 8.8.8.8, 1.1.1.1, 9.9.9.9, but this PC is in the UK, so a latency-routed answer is expected here. **Confirm in the Upstash console** that the primary region is eu-west-2 and that no read replica is outside Europe |
+| Supabase region | Ireland (EU West), kept | `supabase projects list`: project `medicalos` (ref `ccst...`, the same ref as the host in Railway's `SUPABASE_URL`) has `region: eu-west-1`. It was not a marker; now confirmed rather than assumed |
+| Anthropic region + terms | "United States and other regions Anthropic operates in (we do not restrict the region)"; deleted within 30 days; not used for training by default | Code: `apps/api/src/services/model-registry.ts` calls `api.anthropic.com` with no `inference_geo`, so the default `global` applies (platform.claude.com/docs/en/manage-claude/data-residency). Retention 30 days and no training on commercial API data by default: privacy.claude.com articles 7996866 and 7996868. Flagged inputs can be kept up to 2 years; not stated in the policy (it is the exception, and we send no identity). **Not verified for our org:** that nobody opted the Console workspace into data sharing (default is off) |
+| OpenAI region + terms | "United States and other regions OpenAI operates in"; up to 30 days abuse-monitoring retention; no training | developers.openai.com/api/docs/guides/your-data: abuse-monitoring logs "up to 30 days", API data "not used to train", image endpoints (`gpt-image-2`) 30 days; no regional constraint unless a project is created with data residency, which this one is not (no regional host in `image-generation.ts`). Faculty-only, no student data |
+| Expo region | "Mainly the United States" | expo.dev/privacy: processing in the US for non-US users, DPF + SCCs; no stated retention for push tokens. docs.expo.dev FAQ: notification content is held only in memory and queues. The policy does not state an Expo retention period because Expo publishes none |
+| Sign-in email provider | **One question left** (see 4.4) | Nothing in the repo or memory says whether production uses Supabase's built-in mailer or custom SMTP. `supabase/config.toml` has the SMTP block commented out and says production does not read it; `supabase/templates/README.md` says the owner pastes templates in the dashboard (Authentication -> Emails). The public `/auth/v1/settings` does not expose SMTP. I did not take the owner's Supabase access token out of the Windows credential store to call the Management API |
+| Railway log retention | 7 days | `railway status --json`: `"plan": "hobby"`. docs.railway.com/observability/logs: Trial 7, Hobby 7, Pro 30, Enterprise up to 90 days. A Railway staff forum reply says all logs are stored 90 days with the plan only limiting what you can query; the docs are the published figure and the policy uses them. Upgrading to Pro changes this to 30 |
+| Supabase Auth log retention + deleted users | Event table: kept while the account exists, entries naming the account id or email deleted on deletion; platform logs "no longer than 28 days" | Table `auth.audit_log_entries`: docs list no automatic expiry (supabase.com/docs/guides/auth/audit-logs). Deletion: migration 094 `privacy_forget_auth_audit` (see 4.3). Platform log retention by plan, supabase.com/pricing as of 2026-10-15: Free 1 day, Pro 7, Team 28, Enterprise 90. The plan of org `cloudzzy` is not readable with the CLI, so the policy uses the Team ceiling. Tighten to 7 days if you are on Pro |
+| Backup rotation | "within 30 days" | Supabase docs (supabase.com/docs/guides/platform/backups): daily backups Pro 7 days, Team 14, Enterprise up to 30; PITR add-on 7/14/28; Free has no managed daily backups. 30 is the ceiling of every paid plan. Tighten to "7 days" if on Pro |
+| Lecturers and built-in answers | Yes, lecturers can see them, for students who are active members of one of their classes. Page now says so | `supabase/migrations/042_faculty_privacy.sql`: `privacy_can_teach` is true for any active user on a `shared_core` root; `privacy_can_review_attempt` additionally needs the actor to be faculty owning an unarchived class in which the learner is an approved active member. `053`: policy `privacy_attempt_teacher` (SELECT on `assessment_attempts` to `authenticated`) and `privacy_override_attempt` both use it. `install-shared-privacy.ts` installs the built-in lesson checks as `shared_core` templates, and `081`'s attempt insert carries `access_root_id`. `apps/api/src/db/client.ts`: `/faculty/attempts` runs as the caller, so RLS applies. Read from master `8985a61`; **not exercised against a database** |
+| NSIS uninstaller | Removes program + shortcuts; "Delete the application data" box (off by default) deletes `%APPDATA%\org.medicalos.desktop` and `%LOCALAPPDATA%\org.medicalos.desktop`; never the Credential Manager entries | `apps/desktop/src-tauri/tauri.conf.json`: `targets: ["nsis"]`, `installMode: currentUser`, no custom template or hooks; Tauri 2.12.0 (`Cargo.lock`). Tauri's stock `installer.nsi` (github.com/tauri-apps/tauri, crates/tauri-bundler): `un.ConfirmShow` adds the unchecked box, then `RmDir /r "$APPDATA\${BUNDLEID}"` and `RmDir /r "$LOCALAPPDATA\${BUNDLEID}"`; the box is skipped in passive and silent mode (data kept). `T6-CONTRACT.md` row 10 and `secrets.rs` comment: no hook removes keyring entries. **Not run**: I did not run an NSIS uninstall (only the LOCAL build may be installed) and read the template from `dev`, not from the exact 2.12.0 tag |
+| Device limit (terms) | Terms and policy now say a student account "may be limited" to two devices; no marker | `railway variables --json` names: neither `MOS_DEVICE_LIMIT_MODE` nor `MOS_MAX_DEVICES` is set on Railway production, so code defaults apply: `observe` (records, refuses nothing) and 2 (`apps/api/src/services/device-limit.ts:62-66`; `docs/DEVICE-LIMIT.md`). "May be limited" is true today and stays true when enforced, so the page does not need to wait. Production values themselves were not read |
+| Legal entity + address | CLOUDZZY LTD, 320 Firecrest Court, Centre Park, Warrington, WA1 1RG, United Kingdom, used exactly as the owner gave it. On the privacy policy (section 1 and the contact block), the terms (section 1 and contact), the deletion page (section 2) and the support page (Get help) | Owner's message via the coordinator, 2026-10-15. The owner's D-U-N-S number and Partner Center organisation id are deliberately not on any page |
+| Grievance Officer name/address | CLOUDZZY LTD acts as Grievance Officer; contact is the email plus the company address | Recommended, not legal advice. DPDPA rules need the business contact of a person who can answer questions, not a named officer. The older in-app `apps/web/src/components/legal/PrivacyPolicy.tsx` names `privacy@medicalos.in` as Grievance Officer; that component is not imported anywhere (dead code) and the mailbox may not exist. Not used |
+| Lawful basis + UK GDPR (rewritten: the controller is a UK company) | Section 4.1 of the policy: UK GDPR and DPA 2018 apply to all processing wherever the user is; Article 6 basis per data category (contract for account, progress, answers, classes, messages and AI marking; consent for the push token; legitimate interests for devices, installs, screenshot reports, watermark, logs, limits and the content-change record; legal obligation for requests); no special category data; rights under Articles 15 to 22 listed; complaint to the ICO (ico.org.uk); DPDPA framing kept for India (consent paragraph, section 10, Board complaint) | Recommended, not legal advice. Keep a short legitimate-interests assessment on file for the three LI rows. AI marking is not an Art. 22 decision (a score and feedback, not a decision with legal or similar effect) |
+| Transfers from the UK (new policy section 8 table) | Safeguard named per provider; UK -> Ireland/Netherlands is covered by UK adequacy regulations for the EEA | Supabase: SCCs + UK ICO addendum (supabase.com/privacy). Railway: DPA s.9.4 incorporates the UK Addendum; DPF only if certified (railway.com/legal/dpa). Netlify: DPF + UK Extension + SCCs (netlify.com/privacy s.5, s.13). Anthropic: DPA Schedule 3 Part B incorporates the UK Addendum (anthropic.com/legal/data-processing-addendum); it does not claim DPF. Expo: self-certified DPF + UK Extension (expo.dev changelog 2024-12-17, expo.dev/privacy). OpenAI: SCCs + UK Addendum per a secondary summary of its DPA (openai.com refused my fetch with 403). Upstash: DPA only; its privacy PDF links to dataprivacyframework.gov but I could not read its text. **Verify before publishing:** (a) each DPA is actually in force for CLOUDZZY LTD's account (Anthropic/Railway/Supabase/Netlify DPAs usually apply automatically with the terms; confirm in each console); (b) Expo's and Netlify's active status on dataprivacyframework.gov, UK Extension column; (c) OpenAI's DPA text; (d) Upstash's mechanism, and swap the row's wording if it is the DPF or SCCs |
+| India-restricted countries | "As of the date of this policy, none has been notified" | Recommended, not legal advice. DPDPA s.16(1) is a negative list: transfers are allowed except to countries the Central Government notifies. Searched 2026-10-15: no notification found, and law-firm and compliance sources (Sept 2026) say s.16 and Rule 15 are not yet in force (18-month phase, expected 2027-05-13). I did not read the Gazette. Re-check on publication day |
+| Inactivity period | Recommendation applied: no inactivity deletion now; the page says it will be reviewed when MedicalOS opens beyond invited students, and that users will be told in the app first | Recommended. The DPDP Rules' inactivity-erasure schedule covers e-commerce, gaming and social media above user thresholds, not an invite-only education app. If you prefer a number, replace the sentence in section 9 row 1 with "We delete an account after 24 months without sign-in, and tell you by email 30 days before"; that needs a nightly job that does not exist |
+| Dates (8 places) | One token, `[OWNER: date]`, in the header and footer of the four pages | `sed -i 's/\[OWNER: date\]/15 October 2026/g' privacy-policy-medicalos.html delete-account-medicalos.html terms-medicalos.html support-medicalos.html` (use the real date). The markers are inside `<mark>`; delete the `<mark>` tags too: `sed -i 's#<mark>\(15 October 2026\)</mark>#\1#g'` |
+| Delete page: audit log identifiers | Page says the audit-log entries stay but lose the account identifier | Depends on 094 (4.3) |
+| Delete page: periods | One sentence: backups within 30 days, server logs 7 days, sign-in event entries deleted on deletion, platform logs within 28 days, Upstash counters within 40 days | The rows above; Upstash is 4.3 item 6 |
+
+### 4.2 Findings made while settling these (not in the first pass)
+
+1. **Rate-limit analytics in Upstash have no expiry.** `apps/api/src/middleware/redis.ts` creates 16 limiters with
+   `analytics: true`. In the installed `@upstash/ratelimit` 2.0.8, `Analytics` passes `retention: "90d"` to
+   `@upstash/core-analytics` 0.0.10, whose `ingest` is only `ZINCRBY <prefix>:events:<hour>` with a JSON member
+   holding the identifier (user id or IP) and no `EXPIRE` anywhere in that package. So hourly zsets of user ids and
+   IPs accumulate for ever, and account deletion does not touch them. Nothing in the repo reads them (no
+   `getUsage`/`getAllowedBlocked`); only the Upstash console dashboard does. The first-pass inventory said
+   "analytics retention not set in code" and could not say more. **Read from source; not looked at on the production
+   Redis.** The policy's "rate-limit counters: seconds to a day" is true of the counters but not of these records
+   until the follow-up in 4.3 item 6.
+2. **The owner holds a copy of production user data.** `C:\Users\Nihal\dev\medicalos-backups\` has
+   `prod-2026-10-08-pre-cutover.dump` (per the cutover memory: a full dump "with user data" for the rehearsal).
+   It is outside every provider and outside account deletion, and it makes "backups rotate within 30 days" false for
+   that file. Delete it (and the rehearsal stack `medicalos-rehearsal`, which is a prod copy) once no longer needed, or
+   the 30-day sentence in section 9 is untrue.
+3. Anthropic API inputs flagged by its safety systems can be kept up to 2 years (privacy.claude.com 7996866). We send
+   no identity with them, so the page does not mention it.
+4. Railway: the docs say Hobby logs are kept 7 days but a staff reply says 90 days stored. The page uses the docs.
+
+### 4.3 Wording that depends on the deletion-fix PR (branch `claude/deletion-gaps`, migration 094)
+
+State read 2026-10-15: `MedicalOS-deletion-gaps` has migration `094_data_retention.sql` and
+`supabase/tests/094_data_retention.seed.sql` **untracked and uncommitted**; no API change yet (no tracked file
+differs from `a6d0d0e`). The sentences below are true only once the migration is applied (by the owner) and the
+API code that calls its functions is deployed. Do not publish the page before then, or take these sentences out.
+
+| # | Page sentence | What 094 (or the PR) must do | Source |
+|---|---|---|---|
+| 1 | Class invitations: "An invitation that expires or is withdrawn is deleted 7 days later. One that is accepted is deleted 7 days after you accept it, once the app has told you that you have joined, and in any case within 30 days" | `privacy_purge_class_invitations` (grace 7 days; accepted: 7 days and `announced_at`, or 30 days), nightly 21:30 UTC via pg_cron | 094 section 1, 6 |
+| 2 | Push tokens: "Deleted when you sign out or switch notifications off. Any other switched-off token is deleted a week later" | API deletes the row at unregister/revoke (stated in the 094 header, **not yet in code**); `privacy_purge_push_devices` deletes inactive rows older than 7 days | 094 header, section 2 |
+| 3 | Audit log: "keeps its entries but loses your account identifier" (policy section 11, delete page section 4) | `privacy_forget_account_references` -> `scrub_access_audit(user)`: nulls `actor`, replaces the id inside `details` with the nil uuid; nightly sweep for earlier deletions. API call in `DELETE /account` **not yet in code** | 094 section 3 |
+| 4 | Sign-in event log: "entries that name your account identifier or email address are deleted when you delete your account" (policy section 9, delete page section 4) | `privacy_forget_auth_audit(user, emails)` called after the auth user is deleted. 094 itself says: **NOT VERIFIED on hosted Supabase** that the role can delete from `auth.audit_log_entries`. Test it on the first real deletion | 094 section 4 |
+| 5 | `topic_placements.placed_by` / `account_devices.removed_by` | Not on the page (staff-only); 094 adds `ON DELETE SET NULL` foreign keys | 094 section 5 |
+| 6 | Rate-limit counters expire by themselves, "the longest within 40 days"; nothing identifying kept in Upstash after that | **Not in 094** ("NOT DONE HERE ... Upstash keys"). Needs: `analytics: false` on the 16 limiters in `middleware/redis.ts` (nothing reads the analytics) plus a one-off removal of existing `medicalos:*:events:*` zsets in Upstash | 4.2 item 1 |
+
+Also by design, 094 does not purge `account_devices` rows of devices a user signed out; the page says they stay until
+the account is deleted.
+
+### 4.4 What is left for the owner
+
+1. **ICO data protection fee.** A UK company that processes personal data on computer normally has to pay the ICO fee (and register) unless an exemption applies; the fee tier depends on size and turnover. Check at ico.org.uk/for-organisations/data-protection-fee and register CLOUDZZY LTD. Not for the published page.
+   **Representatives.** No UK representative is needed for a UK controller. An EU representative under EU GDPR Art. 27 may be needed if EU users are targeted (offering the service to people in the EU); the apps are on worldwide stores but MedicalOS is invite-only and built for India. The page says so and names no representative. Counsel to decide. Not for the published page.
+   **Terms of Service, section 11, say Indian law and Indian courts**, but the provider is now a UK company. I did not change it (a legal choice). Counsel to decide whether the Terms should name England and Wales for UK/overseas users and India for Indian users.
+2. **Sign-in email provider:** Supabase dashboard -> Authentication -> Emails -> SMTP Settings. Custom SMTP on: name the
+   provider and region in the processors table. Off: delete that row.
+3. **Publication date** (one token, `[OWNER: date]`, 8 places; command in 4.1).
+4. **Inactivity choice:** the recommendation (none now, review at wider launch) is already on the page; say if you want a number.
+5. **Plan tiers (optional tightening):** Supabase plan -> backups "within 30 days" becomes 7 (Pro) or 14 (Team), platform logs
+   "28 days" becomes 7 (Pro). Railway is Hobby (read from the CLI); upgrading to Pro makes its logs 30 days.
+6. **Confirm in consoles:** Upstash primary region/replicas; Anthropic Console workspace is not opted into data sharing.
+7. **Counsel review recommended** of: the UK GDPR section and lawful-basis table, the transfers table, the "no restricted country" sentence, the DPDPA consent wording, the Grievance Officer arrangement, and whether lecturers/institutions are independent controllers of the class rosters and attendance they download (the page treats CLOUDZZY LTD as the controller of everything).
+8. Merge/apply the deletion-fix PR (4.3) before publishing, and delete the local production dump (4.2 item 2).
 
 ## 5. What I did not verify
 
@@ -160,5 +225,9 @@ same project region.
   already notes both need updating for the device id, model and screenshot events, and for push tokens).
 - The rendered pages in a browser (HTML was balance-checked and every anchor resolves; the stylesheet and
   classes are the existing ones). No BrowserOS check: these are static legal pages, not the app.
-- Legal accuracy of the DPDPA wording (consent, legitimate uses, nominee, Board complaint): drafted from the
-  existing policy's framing; needs counsel.
+- Legal accuracy of the DPDPA wording (consent, legitimate uses, nominee, Board complaint) and of the UK GDPR section:
+  drafted, not reviewed by counsel.
+- Second pass: no production Supabase, Upstash, Anthropic or OpenAI console was opened. Provider facts are from the
+  providers' published pages as of 2026-10-15 (cited in section 4) and from `railway status/variables --json`,
+  `supabase projects list`, `supabase orgs list` and DNS; the Supabase plan and the production SMTP setting could not be read.
+- The HTML was tag-balance checked with a small parser after the second pass; not opened in a browser.
