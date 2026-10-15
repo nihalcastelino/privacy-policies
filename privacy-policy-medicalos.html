@@ -141,7 +141,7 @@
 
     <section id="processors"><h2>7. Who processes your data</h2><p>We use service providers who process data only to run the service. We do not sell your personal data and we do not share it with advertisers or data brokers.</p>
     <div class="table-wrap"><table class="data-table"><thead><tr><th>Provider</th><th>What it does for us</th><th>Your data it handles</th><th>Where</th></tr></thead><tbody>
-      <tr><td>Supabase</td><td>Authentication, the database, file storage, live-lecture messaging, and delivery of queued notifications</td><td>All the account data in section 2</td><td>Ireland (EU West)</td></tr>
+      <tr><td>Supabase</td><td>Authentication (including sending your sign-in links by email), the database, file storage, live-lecture messaging, and delivery of queued notifications</td><td>All the account data in section 2, and your email address and sign-in link when it emails you</td><td>Ireland (EU West)</td></tr>
       <tr><td>Railway</td><td>Runs the MedicalOS server (API)</td><td>Everything that passes through a request, and request logs</td><td>Netherlands (EU West, Amsterdam)</td></tr>
       <tr><td>Netlify</td><td>Serves the web application</td><td>IP address and request details when you load the web app</td><td>A global content delivery network, from the location nearest you</td></tr>
       <tr><td>Upstash</td><td>Short-lived rate-limit and AI-spend counters</td><td>Your account identifier or IP address</td><td>Europe (London)</td></tr>
@@ -151,7 +151,6 @@
       <tr><td>Apple and Google</td><td>Deliver push notifications to your phone; provide sign-in with Apple and with Google; distribute the mobile apps</td><td>Push token and notification text; the email and name you allow at sign-in</td><td>Their own global systems</td></tr>
       <tr><td>Microsoft</td><td>Distributes MedicalOS for Windows through the Microsoft Store, under its own privacy statement</td><td>None from the app</td><td>Their own global systems</td></tr>
       <tr><td>GitHub</td><td>Hosts the Windows installer and its update files, and these policy pages</td><td>IP address when you download or check for an update. No account data</td><td>Their own global systems</td></tr>
-      <tr><td>Email delivery</td><td>Sends sign-in links</td><td>Your email address and the link</td><td><mark>[OWNER: open Supabase, Authentication, Emails, SMTP Settings. If custom SMTP is on, name that provider and its region here. If it is off, delete this whole row: Supabase&rsquo;s own mailer is covered by the Supabase row]</mark></td></tr>
     </tbody></table></div></section>
 
     <section id="transfers"><h2>8. Transfers outside the UK and India</h2><p>We are a United Kingdom company. Your data is stored in Ireland, our server runs in the Netherlands, and our rate-limit store is in London. The UK treats Ireland and the Netherlands (the EEA) as adequate for personal data. Some providers also handle data in the United States and other countries, as the table in section 7 shows. When personal data is sent from the UK to a provider in a country without an adequacy decision, we rely on one of these safeguards, and we send only what each provider needs:</p>
